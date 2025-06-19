@@ -1,0 +1,11 @@
+flask
+opencv-python
+ultralytics
+torch
+torchvision
+tensorflow
+keras
+numpy
+matplotlib
+Pillow
+scikit-learn
