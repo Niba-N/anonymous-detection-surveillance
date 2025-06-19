@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Real-Time Anomaly & Weapon Detection</title>
+    <style>
+        body { font-family: Arial; text-align: center; background-color: #121212; color: white; }
+        img { border: 5px solid #444; margin-top: 10px; max-width: 90%; height: auto; }
+        button {
+            padding: 12px 25px;
+            background-color: #0f62fe;
+            border: none;
+            color: white;
+            font-size: 16px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+        #status, #metrics {
+            margin-top: 10px;
+            font-size: 18px;
+            color: #00ffcc;
+        }
+    </style>
+</head>
+<body>
+    <h1>🚨 Real-Time Anomaly & Weapon Detection</h1>
+    <button onclick="startTraining()">Start Training</button>
+    <div id="status">Status: {{ training_status }}</div>
+    <div id="metrics">Loss: -- | Threshold: --</div>
+    <img src="{{ url_for('video_feed') }}" />
+
+    <script>
+        function startTraining() {
+            fetch('/train')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById("status").innerText = "Status: " + data.status;
+                });
+        }
+
+        function updateStatus() {
+            fetch('/status')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById("status").innerText = "Status: " + data.status;
+                });
+        }
+
+        function updateMetrics() {
+            fetch('/metrics')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById("metrics").innerText = `Loss: ${data.loss} | Threshold: ${data.threshold}`;
+                });
+        }
+
+        setInterval(updateStatus, 2000);
+        setInterval(updateMetrics, 2000);
+    </script>
+</body>
+</html>
